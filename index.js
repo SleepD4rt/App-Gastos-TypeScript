@@ -1,55 +1,53 @@
-import { get,save } from "./filesMethods.js";
+import { get, save } from "./filesMethods.js";
 import inquirer from "inquirer";
-import { promptNewUser } from "./userPrompts.js";
+import { promptNuevoGasto } from "./gastoPrompts.js";
 
-const main = async ()=>{
-    let run=true;
-    while(run){
-        const action=await inquirer.prompt([
-            {
-                type:"list",
-                name:"chosen",
-                message:"Elija por favor:",
-                choices: [
-                    {value:1,name:"Obtener todos los usuarios"},
-                    {value:2,name:"Crear un nuevo usuario"},
-                    {value:99,name:"Salir"}
-                ],
-            },
-
-        ]);
-        switch(action.chosen) {
-            case 1:
-                await getAllUsers();
-                break;
-            case 2:
-                await createNewUser();
-                break;
-            case 99:
-                run=false;
-                break;
-            default:
-                run=false;
-                break;
-        }
+const main = async () => {
+  let run = true;
+  while (run) {
+    const action = await inquirer.prompt([
+      {
+        type: "list",
+        name: "chosen",
+        message: "Elija por favor:",
+        choices: [
+          { value: 1, name: "Cargar nuevo gasto" },
+          { value: 2, name: "Mostrar todos los gastos" },
+          { value: 99, name: "Salir" },
+        ],
+      },
+    ]);
+    switch (action.chosen) {
+      case 1:
+        await createNewGasto();
+        break;
+      case 2:
+        await getAllGastos();
+        break;
+      case 99:
+        run = false;
+        break;
+      default:
+        run = false;
+        break;
     }
-    console.log("Adios, muchas gracias por utilizar Userify®")
+  }
+  console.log("Saludos, gracias por utilizar la App de Gastos");
 };
 
 main();
 
-
-async function createNewUser(){
-    console.log("Agregando nuevo usuario...");
-    const newUserData=await promptNewUser();
-    console.log("Creando:",newUserData);
-    const currentUsers=await get("users");
-    //Aca podes agregar una funcion de validacion para newUserData
-    currentUsers.push(newUserData);
-    await save("users",currentUsers);
+async function createNewGasto() {
+  console.log("Agregando nuevo gasto...");
+  const newGastoData = await promptNuevoGasto();
+  console.log("Creando:", newGastoData);
+  const currentGasto = await get("gastos");
+  //Aca podes agregar una funcion de validacion para newUserData
+  currentGasto.push(newGastoData);
+  await save("gastos", currentGasto);
 }
 
-async function getAllUsers() {
-    const currentUsers=await get("users");
-    console.log(currentUsers);
+async function getAllGastos() {
+  const currentGastos = await get("gastos");
+  console.log(currentGastos);
 }
