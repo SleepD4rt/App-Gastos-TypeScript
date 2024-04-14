@@ -1,5 +1,6 @@
 import inquirer from "inquirer";
 import DatePrompt from "inquirer-date-prompt";
+import chalk from "chalk";
 
 inquirer.registerPrompt("date", DatePrompt);
 
@@ -9,28 +10,26 @@ export async function promptNuevoGasto() {
 
 const nuevoGastoprompt = [
   {
-    type: "list",
-    name: "gastos",
-    message: "Elija por favor:",
-    choices: [
-      { value: 1, name: "Hogar" },
-      { value: 2, name: "Empresa" },
-      { value: 3, name: "Personal" },
-      { value: 4, name: "Servicios" },
-      { value: 5, name: "Salud" },
-      { value: 99, name: "Varios" },
-    ],
+    type: "rawlist",
+    name: "tipo_gastos",
+    message: "Selecciona el tipo de gasto",
+    choices: ["Hogar", "Empresa", "Personal", "Servicios", "Salud", "Varios"],
   },
   {
     type: "date",
-    name: "birth_date",
-    message: "Ingrese su fecha de nacimiento:",
+    name: "fecha_transaccion",
+    message: "Ingrese la fecha del gasto:",
+    transformer: (s) => chalk.bold.green(s),
     locale: "es-ES",
-    format: { month: "short", hour: undefined, minute: undefined },
+    format: {
+      month: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
   },
   {
     type: "input",
-    name: "description",
+    name: "descripcion",
     message: "Ingrese una descripción",
   },
 
@@ -38,10 +37,5 @@ const nuevoGastoprompt = [
     type: "input",
     name: "monto",
     message: "Monto",
-  },
-  {
-    type: "confirm",
-    name: "confirmar",
-    message: "Agregar Gasto.",
   },
 ];
