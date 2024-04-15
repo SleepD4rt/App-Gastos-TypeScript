@@ -32,22 +32,27 @@ const main = async () => {
         break;
     }
   }
-  console.log("Saludos, gracias por utilizar la App de Gastos");
+  console.log("Saludos, gracias por utilizar la App de Gastos \n");
 };
 
 main();
 
 async function createNewGasto() {
+  console.clear();
   console.log("Agregando nuevo gasto...");
   const newGastoData = await promptNuevoGasto();
   console.log("Creando:", newGastoData);
   const currentGasto = await get("gastos");
-  //Aca podes agregar una funcion de validacion para newUserData
   currentGasto.push(newGastoData);
   await save("gastos", currentGasto);
 }
 
 async function getAllGastos() {
+  console.clear();
   const currentGastos = await get("gastos");
-  console.log(currentGastos);
+  if (currentGastos.length) {
+    console.log(currentGastos);
+  } else {
+    console.log("No hay Gastos cargados");
+  }
 }
